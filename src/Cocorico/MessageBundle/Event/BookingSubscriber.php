@@ -14,6 +14,7 @@ namespace Cocorico\MessageBundle\Event;
 
 use Cocorico\CoreBundle\Event\BookingEvent;
 use Cocorico\CoreBundle\Event\BookingEvents;
+use Cocorico\CoreBundle\Mailer\TwigSwiftMailer;
 use Cocorico\MessageBundle\Model\ThreadManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -23,11 +24,18 @@ class BookingSubscriber implements EventSubscriberInterface
     protected $threadManager;
 
     /**
-     * @param ThreadManager $threadManager
+     * @var TwigSwiftMailer
      */
-    public function __construct(ThreadManager $threadManager)
+    protected $twigSwiftMailer;
+
+    /**
+     * @param ThreadManager $threadManager
+     * @param TwigSwiftMailer $twigSwiftMailer
+     */
+    public function __construct(ThreadManager $threadManager, TwigSwiftMailer $twigSwiftMailer)
     {
         $this->threadManager = $threadManager;
+        $this->twigSwiftMailer = $twigSwiftMailer;
     }
 
 
@@ -36,6 +44,11 @@ class BookingSubscriber implements EventSubscriberInterface
         $booking = $event->getBooking();
         $user = $booking->getUser();
         $this->threadManager->createNewListingThread($user, $booking);
+
+        // Send mail to admin
+        $title = 'New booking request from ' . $booking->getUser()->getFullName();
+        $message = $booking->__toString();
+        $this->twigSwiftMailer->sendMessageToAdmin($title, $message);
     }
 
 
