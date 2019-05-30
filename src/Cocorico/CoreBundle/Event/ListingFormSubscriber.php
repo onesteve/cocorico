@@ -23,7 +23,7 @@ class ListingFormSubscriber implements EventSubscriberInterface
             TextType::class,
             array(
                 'label' => 'ISBN',
-                'mapped' => false,
+                'required' => true,
             )
         );
     }

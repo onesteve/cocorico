@@ -53,6 +53,15 @@ class Listing extends BaseListing
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="isbn", type="string", length=255, nullable=false)
+     *
+     * @Assert\NotBlank(message="assert.not_blank")
+     */
+    protected $isbn;
+
+    /**
      * @Assert\NotBlank(message="assert.not_blank")
      *
      * @ORM\ManyToOne(targetEntity="Cocorico\UserBundle\Entity\User", inversedBy="listings", cascade={"persist"})
@@ -272,6 +281,24 @@ class Listing extends BaseListing
         return $this->listingListingCategories;
     }
 
+    /**
+     * @return string
+     */
+    public function getIsbn()
+    {
+        return $this->isbn;
+    }
+
+    /**
+     * @param string $isbn
+     * @return Listing
+     */
+    public function setIsbn(string $isbn)
+    {
+        $this->isbn = $isbn;
+
+        return $this;
+    }
 
     /**
      * Set user

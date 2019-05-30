@@ -111,6 +111,7 @@ class ListingFixtures extends Fixture implements DependentFixtureInterface
 
         //Listing
         $listing = new Listing();
+        $listing->setIsbn('123456789');
         $listing->setLocation($location);
         $listing->addImage($image1);
         $listing->addImage($image2);
